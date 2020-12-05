@@ -42,35 +42,19 @@ def calculate_seat_id(boarding_pass):
     column = calculate_seat_column(boarding_pass[7:])
     return row * 8 + column
 
-def quick_sort(list):
-    if not list:
-        return []
-    else:
-        pivot = list[0]
-        less = [x for x in list     if x <  pivot]
-        more = [x for x in list[1:] if x >= pivot]
-        return quick_sort(less) + [pivot] + quick_sort(more)
-
 with open('input.txt') as file:
     boarding_passes = [line.strip() for line in file]
 
 # Part one
 
-highest = 0
-
-for boarding_pass in boarding_passes:
-    seat_id = calculate_seat_id(boarding_pass)
-    if highest < seat_id:
-        highest = seat_id
-
-print(f"Highest Seat ID: {highest}")
+ids = [calculate_seat_id(boarding_pass) for boarding_pass in boarding_passes]
+print(max(ids))
 
 # Part two
 
-ids = [calculate_seat_id(boarding_pass) for boarding_pass in boarding_passes]
-ids = quick_sort(ids)
+ids = sorted([calculate_seat_id(boarding_pass) for boarding_pass in boarding_passes])
 
 for id, next_id in zip(ids, ids[1:]):
     if id + 1 != next_id:
-        print(f"My Seat ID: {id + 1}")
+        print(id + 1)
         break
